@@ -1,0 +1,50 @@
+org: gersonmlb
+app: reto-backend
+service: reto-backend
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource:
+        - arn:aws:dynamodb:us-east-1:330883926333:table/PlanetsTable
+
+functions:
+  planets:
+    handler: api/planets/v1/getPlanets.getPlanets
+    events:
+      - httpApi:
+          path: /api/v1/planets
+          method: get
+  
+  getPlanet:
+    handler: api/planets/v2/getPlanet.getPlanet
+    events:
+      - httpApi:
+          path: /api/v2/planets/{id}
+          method: get
+
+  addPlanet:
+    handler: api/planets/v2/addPlanet.add
+    events:
+      - httpApi:
+          path: /api/v2/addplanet
+          method: post
+
+resources:
+  Resources:
+    PlanetsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: PlanetsTable
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH

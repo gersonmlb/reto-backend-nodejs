@@ -1,0 +1,17 @@
+{
+  "name": "reto-backend",
+  "version": "1.0.0",
+  "description": "Reto Backend",
+  "author": "Gerson Malca",
+  "license": "ISC",
+  "dependencies": {
+    "@middy/core": "^3.6.2",
+    "@middy/http-json-body-parser": "^3.6.2",
+    "@middy/validator": "^3.6.2",
+    "aws-sdk": "^2.1243.0",
+    "uuid": "^9.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
