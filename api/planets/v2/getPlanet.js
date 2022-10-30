@@ -1,28 +1,29 @@
 const AWS = require('aws-sdk');
+const Responses = require('../../../internal/responses/api.responses');
 
 const lambaGetPlanet = async (event) => {
 
   try {
-    const dynamodb = new AWS.DynamoDB.DocumentClient();
+    const connection = new AWS.DynamoDB.DocumentClient();
+
     const { id } = event.pathParameters
 
-    const result = await dynamodb.get({
+    const result = await connection.get({
       TableName: "PlanetsTable",
-      Key:{
+      Key: {
         id
       }
     }).promise()
 
-    return {
-      status: 200,
-      body: result.Item,
-    };
-  } catch (error) {
+    if (!result.Item) {
+      return Responses._404({ message: 'Planets Not Found :(' });
+    }
 
-    return {
-      status: 500,
-      body: JSON.stringify(error),
-    };
+    return Responses._200(result.Item);
+
+  } catch (error) {
+    console.log(error)
+    return Responses._500({ message: 'Internal Error' });
   }
 
 };

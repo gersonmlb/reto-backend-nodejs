@@ -20,12 +20,12 @@ functions:
       - httpApi:
           path: /api/v1/planets
           method: get
-  
+
   getPlanet:
     handler: api/planets/v2/getPlanet.getPlanet
     events:
       - httpApi:
-          path: /api/v2/planets/{id}
+          path: /api/v2/planets/{name}
           method: get
 
   addPlanet:
@@ -41,6 +41,22 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: PlanetsTable
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: name
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+          - AttributeName: name
+            KeyType: RANGE
+
+    TablaPlanetas:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: TablaPlanetas
         BillingMode: PAY_PER_REQUEST
         AttributeDefinitions:
           - AttributeName: id

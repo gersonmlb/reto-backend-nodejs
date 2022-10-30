@@ -6,6 +6,7 @@
   "license": "ISC",
   "dependencies": {
     "@middy/core": "^3.6.2",
+    "@middy/http-error-handler": "^3.6.2",
     "@middy/http-json-body-parser": "^3.6.2",
     "@middy/validator": "^3.6.2",
     "aws-sdk": "^2.1243.0",
@@ -13,5 +14,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "jest": "^29.2.2"
   }
 }

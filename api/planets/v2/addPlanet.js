@@ -1,13 +1,14 @@
 const { v4 } = require('uuid')
-const AWS = require('aws-sdk')
+const AWS = require('aws-sdk');
 
 const middy = require("@middy/core");
 const httpJSONBodyParser = require("@middy/http-json-body-parser");
 const validator = require('@middy/validator');
+const httpErrorHandler = require('@middy/http-error-handler');
 
 const lambaAddPlanet = async (event) => {
     try {
-        const dynamodb = new AWS.DynamoDB.DocumentClient();
+        const connection = new AWS.DynamoDB.DocumentClient();
 
         const {
             name,
@@ -19,7 +20,7 @@ const lambaAddPlanet = async (event) => {
             terrain,
             surface_water,
             population
-        } = JSON.parse(event.body);
+        } = event.body;
 
         const created = new Date();
         const id = v4();
@@ -38,7 +39,7 @@ const lambaAddPlanet = async (event) => {
             created
         }
 
-        await dynamodb.put({
+        await connection.put({
             TableName: 'PlanetsTable',
             Item: newPlanet
         }).promise();
@@ -78,5 +79,9 @@ const eventSchema = {
 }
 
 module.exports = {
-    add: middy().use(httpJSONBodyParser()).use(validator({ eventSchema })).use(httpErrorHandler()).handler(lambaAddPlanet)
+    add: middy()
+        .use(httpJSONBodyParser())
+        .use(validator({ eventSchema }))
+        .use(httpErrorHandler())
+        .handler(lambaAddPlanet)
 };
