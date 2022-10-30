@@ -1,6 +1,6 @@
 
 const Responses = {
-    _defineResponse(statusCode = 502, data = {}, message = ''){
+    _defineResponse(statusCode = 502, data = {}){
         return {
             headers:{
                 'Content-Type': 'application/json',

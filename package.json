@@ -10,12 +10,19 @@
     "@middy/http-json-body-parser": "^3.6.2",
     "@middy/validator": "^3.6.2",
     "aws-sdk": "^2.1243.0",
+    "jsonwebtoken": "^8.5.1",
+    "swapi-node": "^0.7.0",
     "uuid": "^9.0.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "devDependencies": {
-    "jest": "^29.2.2"
+    "jest": "^29.2.2",
+    "serverless": "^3.23.0",
+    "serverless-dynamodb-local": "^0.2.40",
+    "serverless-offline": "^11.2.1",
+    "serverless-webpack": "^5.10.0",
+    "webpack": "^4.41.6"
   }
 }

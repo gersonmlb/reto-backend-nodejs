@@ -1,33 +1,28 @@
-const AWS = require('aws-sdk');
 const Responses = require('../../../internal/responses/api.responses');
+const middy = require("@middy/core");
+const Dynamo = require('../../../internal/connection/Dynamo');
 
 const lambaGetPlanet = async (event) => {
 
   try {
-    const connection = new AWS.DynamoDB.DocumentClient();
-
     const { id } = event.pathParameters
 
-    const result = await connection.get({
-      TableName: "PlanetsTable",
-      Key: {
-        id
-      }
-    }).promise()
+    const result = await Dynamo.getOne( id, "PlanetsTable")
 
     if (!result.Item) {
-      return Responses._404({ message: 'Planets Not Found :(' });
+      throw new createError(404, { message: { error: "Planet Not Found :(" } });
     }
 
     return Responses._200(result.Item);
 
   } catch (error) {
-    console.log(error)
-    return Responses._500({ message: 'Internal Error' });
+    throw new createError(500, { message: { error: "Internal Error" } });
   }
 
 };
 
 module.exports = {
-  getPlanet: lambaGetPlanet
+  getPlanet: middy()
+    .use(httpErrorHandler())
+    .handler(lambaGetPlanet)
 };

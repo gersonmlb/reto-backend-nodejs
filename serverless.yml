@@ -12,6 +12,29 @@ provider:
         - dynamodb:*
       Resource:
         - arn:aws:dynamodb:us-east-1:330883926333:table/PlanetsTable
+        - arn:aws:dynamodb:us-east-1:330883926333:table/SpeciesPlanet
+        - arn:aws:dynamodb:us-east-1:330883926333:table/TablaPlanetas
+
+plugins:
+    - serverless-webpack
+    - serverless-offline
+    - serverless-dynamodb-local
+
+package:
+    individually: true
+
+custom:
+    tableName: TablaPlanetas
+    bucketName: myserverlessretobackend-123123
+    dynamodb:
+        stages:
+            - dev
+        start:
+            port: 8000
+            inMemory: true
+            migrate: true
+        migration:
+            dir: offline
 
 functions:
   planets:
@@ -25,7 +48,7 @@ functions:
     handler: api/planets/v2/getPlanet.getPlanet
     events:
       - httpApi:
-          path: /api/v2/planets/{name}
+          path: /api/v2/planets/{id}
           method: get
 
   addPlanet:
@@ -34,6 +57,13 @@ functions:
       - httpApi:
           path: /api/v2/addplanet
           method: post
+  
+  getSpecie:
+    handler: api/species/v1/getSpecie.getSpecie
+    events:
+      - httpApi:
+          path: /api/v2/specie/{id}
+          method: get
 
 resources:
   Resources:
@@ -45,18 +75,26 @@ resources:
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
-          - AttributeName: name
-            AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
-          - AttributeName: name
-            KeyType: RANGE
 
     TablaPlanetas:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: TablaPlanetas
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+    
+    SpeciesPlanet:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: SpeciesPlanet
         BillingMode: PAY_PER_REQUEST
         AttributeDefinitions:
           - AttributeName: id

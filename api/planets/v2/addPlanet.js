@@ -5,10 +5,14 @@ const middy = require("@middy/core");
 const httpJSONBodyParser = require("@middy/http-json-body-parser");
 const validator = require('@middy/validator');
 const httpErrorHandler = require('@middy/http-error-handler');
+const Responses = require('../../../internal/responses/api.responses');
+const Dynamo = require('../../../internal/connection/Dynamo');
 
-const lambaAddPlanet = async (event) => {
+const lambaAddPlanet =( async (event) => {
     try {
         const connection = new AWS.DynamoDB.DocumentClient();
+        const id = v4();
+        const created = new Date();
 
         const {
             name,
@@ -21,9 +25,6 @@ const lambaAddPlanet = async (event) => {
             surface_water,
             population
         } = event.body;
-
-        const created = new Date();
-        const id = v4();
 
         const newPlanet = {
             id,
@@ -39,23 +40,13 @@ const lambaAddPlanet = async (event) => {
             created
         }
 
-        await connection.put({
-            TableName: 'PlanetsTable',
-            Item: newPlanet
-        }).promise();
+        await Dynamo.write('PlanetsTable', newPlanet);
 
-        return {
-            statusCode: 200,
-            body: JSON.stringify(newPlanet)
-        };
-
+        return Responses._200(newPlanet);
     } catch (error) {
-        return {
-            statusCode: 500,
-            body: JSON.stringify(error)
-        };
+        throw new createError(500, { message: { error: "Internal Error" } });
     }
-};
+})
 
 const eventSchema = {
     type: 'object',
@@ -79,9 +70,8 @@ const eventSchema = {
 }
 
 module.exports = {
-    add: middy()
+    add: middy(lambaAddPlanet)
         .use(httpJSONBodyParser())
         .use(validator({ eventSchema }))
         .use(httpErrorHandler())
-        .handler(lambaAddPlanet)
 };

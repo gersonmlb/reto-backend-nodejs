@@ -1,0 +1,23 @@
+{
+    "Table": {
+        "TableName": "PlanetsTable",
+        "KeySchema": [
+            {
+                "AttributeName": "id",
+                "KeyType": "HASH"
+            }
+        ],
+        "AttributeDefinitions":[
+            {
+                "AttributeName": "id",
+                "AttributeType": "S"
+            }
+        ],
+        "ProvisionedThoughput":[
+            {
+                "ReadCapacityUnits": 1,
+                "WriteCapacityUnits": 1
+            }
+        ]
+    }
+}

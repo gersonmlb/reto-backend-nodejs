@@ -5,7 +5,8 @@ This repository is purely for the BACKEND NODEJS TECH CHALLENGE
 ## Documentation
 
 The documentation is in the following link.
->  [Documentation API with Open API/Swagger](http:swager.com). 
+
+> [Documentation API with Open API/Swagger](http:swager.com).
 
 ## Usage
 
@@ -27,5 +28,34 @@ functions:
   hello: aws-node-http-api-project-dev-hello (1.9 kB)
 ```
 
-_Note_: In current form, after deployment, your API is public and can be invoked by anyone. For production deployments, you might want to configure an authorizer. For details on how to do that, refer to [http event docs](https://www.serverless.com/framework/docs/providers/aws/events/apigateway/).
+### Tests with Jest
 
+> Install pre requisites
+
+> First, make sure you have Java JDK & JRE (Java Runtime Engine) version 6.x or newer is installed on your machine since it is required by the Local DynamoDB.
+
+
+Install dependencies Dev
+```
+$ npm install
+```
+
+Install dynamo local Dev
+```
+$ npm install serverless-dynamodb-local --save-dev
+```
+
+Install serverless offline local Dev
+```
+$ npm i -g serverless-offline
+```
+
+#### Running the Project Locally
+
+`sls offline start --location .`
+
+
+Run tests
+```
+$ npm test
+```
