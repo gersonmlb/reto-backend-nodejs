@@ -14,8 +14,7 @@ const lambaGetSpecie = async (event) => {
         const result = await Dynamo.getOne(id, "SpeciesPlanet")
 
         if (!result.Item) {
-            console.log('getSpecieSwapi.getSpecieSwapi(event)', event)
-            await getSpecieSwapi.getSpecieSwapi(event)
+            await getSpecieSwapi.getSpecieSwapi(event, true)
         }
 
         return Responses._200(result);

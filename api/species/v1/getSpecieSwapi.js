@@ -20,7 +20,6 @@ const IntegrationSwapi = async (event, add = false) => {
         SWSpecie.plattform = 'API SWAPI'
 
         if (add) {
-            console.log('addSpecie.add(SWSpecie)', SWSpecie)
             await addSpecie.add(SWSpecie)
         }
 
