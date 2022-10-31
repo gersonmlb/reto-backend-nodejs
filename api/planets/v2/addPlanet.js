@@ -1,6 +1,4 @@
 const { v4 } = require('uuid')
-const AWS = require('aws-sdk');
-
 const middy = require("@middy/core");
 const httpJSONBodyParser = require("@middy/http-json-body-parser");
 const validator = require('@middy/validator');
@@ -10,7 +8,6 @@ const Dynamo = require('../../../internal/connection/Dynamo');
 
 const lambaAddPlanet =( async (event) => {
     try {
-        const connection = new AWS.DynamoDB.DocumentClient();
         const id = v4();
         const created = new Date();
 
