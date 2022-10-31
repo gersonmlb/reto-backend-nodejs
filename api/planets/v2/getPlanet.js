@@ -8,7 +8,7 @@ const lambaGetPlanet = async (event) => {
   try {
     const { id } = event.pathParameters
 
-    const SWPlanet = await swapi.species({ id: id }).then(result => result)
+    const SWPlanet = await swapi.planets({ id: id }).then(result => result)
 
     if (!SWPlanet) {
       throw new createError(404, { message: { error: "Planet Not Found :(" } });
