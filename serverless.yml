@@ -6,6 +6,7 @@ frameworkVersion: '3'
 provider:
   name: aws
   runtime: nodejs14.x
+
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -14,27 +15,6 @@ provider:
         - arn:aws:dynamodb:us-east-1:330883926333:table/PlanetsTable
         - arn:aws:dynamodb:us-east-1:330883926333:table/SpeciesPlanet
         - arn:aws:dynamodb:us-east-1:330883926333:table/TablaPlanetas
-
-plugins:
-    - serverless-webpack
-    - serverless-offline
-    - serverless-dynamodb-local
-
-package:
-    individually: true
-
-custom:
-    tableName: TablaPlanetas
-    bucketName: myserverlessretobackend-123123
-    dynamodb:
-        stages:
-            - dev
-        start:
-            port: 8000
-            inMemory: true
-            migrate: true
-        migration:
-            dir: offline
 
 functions:
   planets:
