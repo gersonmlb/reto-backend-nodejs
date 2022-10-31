@@ -23,11 +23,12 @@ const Dynamo = {
 
     async getOne(key, TableName) {
         try {
+            let datakey = key.toString()
 
             const params = {
                 TableName,
                 Key: {
-                    key
+                    datakey
                 }
             }
 
@@ -36,9 +37,11 @@ const Dynamo = {
             if (!data) {
                 return Responses._500({ message: `There was an error fetching the data from ${TableName}` });
             }
+
             return data
         } catch (error) {
-            return Responses._500({ message: `Internal Error - Get One` });
+            console.log(error)
+            return Responses._500({ message: `Internal Error - Get One`, err: error });
         }
     },
 

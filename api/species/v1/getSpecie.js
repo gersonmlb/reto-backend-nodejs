@@ -1,23 +1,21 @@
-const AWS = require('aws-sdk');
 const Responses = require('../../../internal/responses/api.responses');
-const swapi = require('swapi-node');
+const getSpecieSwapi = require('./getSpecieSwapi');
+const Dynamo = require('../../../internal/connection/Dynamo');
 
 const lambaGetSpecie = async (event) => {
 
     try {
-        const connection = new AWS.DynamoDB.DocumentClient();
         const { id } = event.pathParameters;
 
-        const result = await connection.get({
-            TableName: "SpeciesPlanet",
-            Key: {
-                id
-            }
-        }).promise()
+        if (!id) {
+            return Responses._404({ message: 'Id Not Found in Path' });
+        }
+        
+        const result = await Dynamo.getOne(id, "SpeciesPlanet")
 
         if (!result.Item) {
-            console.log('============= sin item ==================')
-            IntegrationSwapi(id)
+            console.log('getSpecieSwapi.getSpecieSwapi(event)', event)
+            await getSpecieSwapi.getSpecieSwapi(event)
         }
 
         return Responses._200(result);
@@ -28,31 +26,6 @@ const lambaGetSpecie = async (event) => {
     }
 
 };
-
-const IntegrationSwapi = async (id) => {
-
-    try {
-        const SWSpecie = await swapi.species({ id: id }).then(result => {
-            result.plattform = 'API SWAPI'
-            console.log('============= SWSpecie item ==================', result)
-            return result;
-        }).catch((err) => {
-            console.log(error)
-            return Responses._500({ message: 'API Error', error: err });
-        });
-        
-        console.log('============ SWSpecie result ================', SWSpecie)
-        if (!SWSpecie) {
-            return Responses._404({ message: 'Specie Not Found :(' });
-        }
-
-        return Responses._200(SWSpecie);
-
-    } catch (error) {
-        console.log(error)
-        return Responses._500({ message: 'Internal Error' });
-    }
-}
 
 module.exports = {
     getSpecie: lambaGetSpecie

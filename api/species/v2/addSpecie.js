@@ -1,50 +1,44 @@
-const AWS = require('aws-sdk');
 const Responses = require('../../../internal/responses/api.responses');
 const middy = require("@middy/core");
+const Dynamo = require('../../../internal/connection/Dynamo');
+const httpErrorHandler = require('@middy/http-error-handler');
 
-const lambaAddSpecie = async (event) => {
+const lambaAddSpecie = async (data) => {
     try {
-        const connection = new AWS.DynamoDB.DocumentClient();
-
         const {
             id,
             name,
             language,
-            homeworld,
-            hair_colors,
-            skin_colors,
-            eye_colors,
-            designation,
-            classification,
-            average_lifespan
-        } = event.body;
-
-        const created = new Date();
-
-        const newSpecie = {
-            id,
-            name,
-            language,
-            homeworld,
             hair_colors,
             skin_colors,
             eye_colors,
             designation,
             classification,
             average_lifespan,
-            created,
-            plattform: 'Own'
+            average_height
+        } = data;
+
+        const created = new Date();
+
+        const newSpecie = {
+            identificador: id,
+            nombre: name,
+            altura_media: average_height,
+            promedio_vida: average_lifespan,
+            clasificación: classification,
+            designacion: designation,
+            color_ojos: eye_colors,
+            color_cabello: hair_colors,
+            idioma: language,
+            colores_de_piel: skin_colors,
+            creado: created,
+            plataforma: 'Own'
         }
 
-        await connection.put({
-            TableName: 'SpeciesPlanet',
-            Item: newSpecie
-        }).promise();
-
+        await Dynamo.write('SpeciesPlanet', newSpecie)
         return Responses._200(newSpecie);
 
     } catch (error) {
-        console.log(error)
         return Responses._500({ message: 'Internal Error' });
     }
 };

@@ -17,6 +17,13 @@ provider:
         - arn:aws:dynamodb:us-east-1:330883926333:table/TablaPlanetas
 
 functions:
+  documentation:
+    handler: documentation/swagger.swagger
+    events:
+      - httpApi: 
+          path: /documentation/swagger
+          method: get
+
   planets:
     handler: api/planets/v1/getPlanets.getPlanets
     events:
@@ -43,6 +50,13 @@ functions:
     events:
       - httpApi:
           path: /api/v2/specie/{id}
+          method: get
+  
+  getSpecieSwapi:
+    handler: api/species/v1/getSpecieSwapi.getSpecieSwapi
+    events:
+      - httpApi:
+          path: /api/v2/specie/swapi/{id}
           method: get
 
 resources:

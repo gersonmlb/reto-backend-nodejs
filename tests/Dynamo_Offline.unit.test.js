@@ -30,21 +30,20 @@ const data = {
     population: 200000
 };
 
+test('Test Dynamo typeof getone', async () => {
+    try {
+        const res_test = await Dynamo.getOne(data.id, validaTableName)
+        expect(res_test).toBe('object')
+    } catch (error) {
+        console.log('error in test dynamo insert', error)
+    }
+});
 
 test('Test Dynamo insert', async () => {
     expect.assertions(1);
     try {
         const res_test = await Dynamo.write(validaTableName, data)
         expect(res_test).toBe(data)
-    } catch (error) {
-        console.log('error in test dynamo insert', error)
-    }
-});
-
-test('Test Dynamo typeof getone', async () => {
-    try {
-        const res_test = await Dynamo.getOne(data.id, validaTableName)
-        expect(res_test).toBe('object')
     } catch (error) {
         console.log('error in test dynamo insert', error)
     }

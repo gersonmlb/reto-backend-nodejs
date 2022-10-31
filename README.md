@@ -6,7 +6,7 @@ This repository is purely for the BACKEND NODEJS TECH CHALLENGE
 
 The documentation is in the following link.
 
-> [Documentation API with Open API/Swagger](http:swager.com).
+> [Documentation API with Open API/Swagger](https://44qvgv7imi.execute-api.us-east-1.amazonaws.com/documentation/swagger).
 
 ## Usage
 
