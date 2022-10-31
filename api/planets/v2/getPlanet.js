@@ -37,7 +37,7 @@ const lambaGetPlanet = async (event) => {
       superficie_agua: surface_water,
       poblacion: population,
       plataforma: 'API Swapi'
-  }
+    }
 
     return Responses._200(dataPlanet);
 
